@@ -3,7 +3,7 @@
 module BlackJack where
 import Cards
 import Wrapper
-import Test.QuickCheck hiding (shuffle)
+import Test.QuickCheck
 
 
 -- Task A
@@ -28,6 +28,9 @@ aCard2 = Card (Numeric 2) Spades
 
 aHand :: Hand
 aHand = Add (Card Ace Diamonds) (Add (Card Ace Spades)(Add aCard2 (Empty)))
+
+aHand1 :: Hand
+aHand1 = Add (Card Ace Hearts) (Add (Card Ace Clubs)(Add aCard1 (Empty)))
 
 hand3 = Add (Card (Numeric 2) Hearts)
           (Add (Card (Numeric 8) Spades) 
@@ -60,8 +63,17 @@ gameOver :: Hand -> Bool
 gameOver h = value h > 21
 
 winner :: Hand -> Hand -> Player
-winner gh bh | gameOver gh          = Bank
-             | gameOver bh          = Guest
-			 | value gh == value bh = Bank
-			 | value gh < value bh  = Bank
-			 | otherwise            = Guest 
+winner gh bh 	| gameOver gh           = Bank
+             	| gameOver bh           = Guest
+		| value gh == value bh  = Bank
+		| value gh < value bh   = Bank
+		| otherwise             = Guest 
+
+
+(<+) :: Hand -> Hand -> Hand
+Empty <+ bot                                    = bot
+(Add c h) <+ bot        | h == Empty            = Add c bot
+                        | otherwise             = h <+ (Add c bot)
+
+
+
