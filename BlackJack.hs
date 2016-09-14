@@ -77,6 +77,7 @@ winner gh bh    | gameOver gh           = Bank
 
 
 -- Task C
+
 (<+) :: Hand -> Hand -> Hand
 Empty <+ bot     = bot
 top <+ bot =  (top <++ Empty) <++ bot
@@ -96,6 +97,7 @@ prop_size_onTopOf h1 h2 = size (h1 <+ h2) == size h1 + size h2
 
 
 -- Task D
+
 fullDeck :: Hand
 fullDeck = suitCards Diamonds <+ suitCards Hearts <+ suitCards Clubs <+ suitCards Spades
     where
@@ -114,8 +116,11 @@ fullDeck = suitCards Diamonds <+ suitCards Hearts <+ suitCards Clubs <+ suitCard
                                                     | r == Ace                                                  = (Add (Card r s) h)
 
 
+-- Task E
 
-
+draw :: Hand -> Hand -> (Hand, Hand)
+draw Empty h = error "draw: The deck is empty."
+draw (Add c h') h = (h', Add c h)
 
 
 
