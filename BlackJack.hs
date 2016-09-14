@@ -4,7 +4,7 @@ module BlackJack where
 import Cards
 import Wrapper
 import Test.QuickCheck
-
+import System.Random
 
 -- Task A
 
@@ -133,5 +133,5 @@ playBank d = playHelper d Empty
         playHelper (Add c d) h  | value h >= 16 = h
                                 | otherwise     = playHelper d (Add c h)
 
-
+-- Task G
 
