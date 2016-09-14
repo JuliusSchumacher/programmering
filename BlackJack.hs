@@ -85,3 +85,20 @@ prop_onTopOf_assoc p1 p2 p3 = p1 <+ (p2 <+ p3) == (p1 <+ p2) <+ p3
 prop_size_onTopOf :: Hand -> Hand -> Bool
 prop_size_onTopOf h1 h2 = size (h1 <+ h2) == size h1 + size h2
 
+
+
+
+fullDeck :: Hand
+fullDeck = suitCards Diamonds <+ suitCards Hearts <+ suitCards Clubs <+ suitCards Spades
+    where
+        suitCards :: Suit -> Hand
+        suitCards s = rankList Empty s
+
+rankList :: Hand -> Suit -> Hand
+rankList h s                        | h == Empty                                                = rankList (Add(Card (Numeric 1) s) h) s
+rankList (Add (Card r s') h) s      | valueCard (Card r s) >= 1  && valueCard (Card r s) < 10   = rankList  (Add (Card (Numeric ((valueCard(Card r s)) + 1)) s) (Add (Card r s) h)) s 
+                                    | r == Numeric 10                                           = rankList (Add (Card Jack s) (Add (Card r s) h)) s
+
+
+
+
