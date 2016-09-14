@@ -79,6 +79,8 @@ top <+ bot =  (top <++ Empty) <++ bot
     (Add c h) <++ bot = h <++ (Add c bot)
 
 
+prop_onTopOf_assoc :: Hand -> Hand -> Hand -> Bool
+prop_onTopOf_assoc p1 p2 p3 = p1 <+ (p2 <+ p3) == (p1 <+ p2) <+ p3
 
 
 
