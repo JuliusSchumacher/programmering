@@ -82,6 +82,6 @@ top <+ bot =  (top <++ Empty) <++ bot
 prop_onTopOf_assoc :: Hand -> Hand -> Hand -> Bool
 prop_onTopOf_assoc p1 p2 p3 = p1 <+ (p2 <+ p3) == (p1 <+ p2) <+ p3
 
-
-
+prop_size_onTopOf :: Hand -> Hand -> Bool
+prop_size_onTopOf h1 h2 = size (h1 <+ h2) == size h1 + size h2
 
