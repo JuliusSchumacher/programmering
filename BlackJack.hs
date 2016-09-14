@@ -63,17 +63,23 @@ gameOver :: Hand -> Bool
 gameOver h = value h > 21
 
 winner :: Hand -> Hand -> Player
-winner gh bh 	| gameOver gh           = Bank
+winner gh bh    | gameOver gh           = Bank
              	| gameOver bh           = Guest
-		| value gh == value bh  = Bank
-		| value gh < value bh   = Bank
-		| otherwise             = Guest 
+		        | value gh == value bh  = Bank
+		        | value gh < value bh   = Bank
+		        | otherwise             = Guest 
 
 
 (<+) :: Hand -> Hand -> Hand
-Empty <+ bot                                    = bot
-(Add c h) <+ bot        | h == Empty            = Add c bot
-                        | otherwise             = h <+ (Add c bot)
+Empty <+ bot     = bot
+top <+ bot =  (top <++ Empty) <++ bot
+    where 
+    (<++) :: Hand -> Hand -> Hand
+    Empty <++ bot     = bot
+    (Add c h) <++ bot = h <++ (Add c bot)
+
+
+
 
 
 
