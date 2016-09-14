@@ -32,6 +32,10 @@ aHand = Add (Card Ace Diamonds) (Add (Card Ace Spades)(Add aCard2 (Empty)))
 aHand1 :: Hand
 aHand1 = Add (Card Ace Hearts) (Add (Card Ace Clubs)(Add aCard1 (Empty)))
 
+
+aceHand :: Hand
+aceHand = Add (Card Ace Hearts) (Add (Card Ace Diamonds) (Add (Card Ace Clubs) (Add (Card Ace Spades) Empty)))
+
 hand3 = Add (Card (Numeric 2) Hearts)
           (Add (Card (Numeric 8) Spades) 
 		  (Add (Card Ace Clubs ) Empty))
@@ -54,10 +58,12 @@ numberOfAces (Add (Card Ace _) h) = 1 + numberOfAces h
 numberOfAces (Add _ h) = numberOfAces h 
 
 value :: Hand -> Integer
-value Empty = 0
-value (Add c h) | valueCard c + value h > 21 
-                            = value h + valueCard c - numberOfAces (Add c h) * 10
-                | otherwise = valueCard c + value h
+value h         | trueValue h > 21  = trueValue h - ((numberOfAces h) * 10)
+                | otherwise         = trueValue h
+
+trueValue :: Hand -> Integer
+trueValue Empty = 0
+trueValue (Add c h) = valueCard c + trueValue h
 
 gameOver :: Hand -> Bool
 gameOver h = value h > 21
@@ -106,6 +112,9 @@ fullDeck = suitCards Diamonds <+ suitCards Hearts <+ suitCards Clubs <+ suitCard
                                                     | r == Queen                                                = rankList (Add (Card King s) (Add (Card r s) h)) s
                                                     | r == King                                                 = rankList (Add (Card Ace s) (Add (Card r s) h)) s
                                                     | r == Ace                                                  = (Add (Card r s) h)
+
+
+
 
 
 
