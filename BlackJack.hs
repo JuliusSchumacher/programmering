@@ -123,4 +123,15 @@ draw Empty h = error "draw: The deck is empty."
 draw (Add c h') h = (h', Add c h)
 
 
+-- Task F
+
+playBank :: Hand -> Hand
+playBank d = playHelper d Empty
+    where
+        playHelper :: Hand -> Hand -> Hand
+        playHelper Empty h = error "playBank: The deck is empty"
+        playHelper (Add c d) h  | value h >= 16 = h
+                                | otherwise     = playHelper d (Add c h)
+
+
 
