@@ -70,10 +70,12 @@ winner gh bh    | gameOver gh           = Bank
 		        | otherwise             = Guest 
 
 
+-- Task C
 (<+) :: Hand -> Hand -> Hand
 Empty <+ bot     = bot
 top <+ bot =  (top <++ Empty) <++ bot
     where 
+    -- Helper: used to invert top hand
     (<++) :: Hand -> Hand -> Hand
     Empty <++ bot     = bot
     (Add c h) <++ bot = h <++ (Add c bot)
@@ -87,17 +89,23 @@ prop_size_onTopOf h1 h2 = size (h1 <+ h2) == size h1 + size h2
 
 
 
-
+-- Task D
 fullDeck :: Hand
 fullDeck = suitCards Diamonds <+ suitCards Hearts <+ suitCards Clubs <+ suitCards Spades
     where
+    --Helper: used to obfuscate rankList
         suitCards :: Suit -> Hand
         suitCards s = rankList Empty s
-
-rankList :: Hand -> Suit -> Hand
-rankList h s                        | h == Empty                                                = rankList (Add(Card (Numeric 1) s) h) s
-rankList (Add (Card r s') h) s      | valueCard (Card r s) >= 1  && valueCard (Card r s) < 10   = rankList  (Add (Card (Numeric ((valueCard(Card r s)) + 1)) s) (Add (Card r s) h)) s 
-                                    | r == Numeric 10                                           = rankList (Add (Card Jack s) (Add (Card r s) h)) s
+            where
+            --helper: Creates a Hand from all the cards from a suit
+                rankList :: Hand -> Suit -> Hand
+                rankList h s                        | h == Empty                                                = rankList (Add(Card (Numeric 2) s) h) s
+                rankList (Add (Card r s') h) s      | valueCard (Card r s) > 1  && valueCard (Card r s) < 10    = rankList (Add (Card (Numeric ((valueCard(Card r s)) + 1)) s) (Add (Card r s) h)) s 
+                                                    | r == Numeric 10                                           = rankList (Add (Card Jack s) (Add (Card r s) h)) s
+                                                    | r == Jack                                                 = rankList (Add (Card Queen s) (Add (Card r s) h)) s
+                                                    | r == Queen                                                = rankList (Add (Card King s) (Add (Card r s) h)) s
+                                                    | r == King                                                 = rankList (Add (Card Ace s) (Add (Card r s) h)) s
+                                                    | r == Ace                                                  = (Add (Card r s) h)
 
 
 
